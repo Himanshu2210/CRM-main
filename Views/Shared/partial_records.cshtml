@@ -1,0 +1,84 @@
+﻿@model CRM.Models.user_List
+
+<!--
+       Author:Sagar Srivastava,
+       Aim:Contains cshtml code common to view pages,
+       Change Log: code ,developer name ,task description ,date
+      =========================================================================================
+       #CC01 ,Chandan Singh ,Active & Deavtive button fade and disable ,03-feb-2021       
+       -->
+
+@foreach (var element in Model.list)
+{
+    <tr class="row" id="@element.userId" style="margin-bottom:10px;">
+
+        <td class="col-md-1">
+            @element.username
+        </td>
+        <td class="col-md-1">
+            @element.email
+        </td>
+        <td class="col-md-1">
+            @element.whatsappPhNo
+        </td>
+        <td class="col-md-1">
+            @element.phNo
+        </td>
+        <td class="col-md-1" data-id="@element.userType">
+            @element.role
+        </td>
+        <td class="col-md-1">
+            @element.skypeId
+        </td>
+        <td class="col-md-1">
+            @element.status
+        </td>
+        @*<td class="col-md-1">
+                <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("EditUser" ,"CRM")?id= @element.userId'" data-record="@element.userId">Edit</button>
+            </td>*@
+        @if (ViewBag.role != "user")
+        {
+    <td class="Lst_td">
+        <span class="link_span">
+            <span data-toggle="tooltip" title="Edit" onclick="location.href = '@Url.Action("EditUser" ,"CRM")?id=@element.userId'" data-record="@element.userId" >
+                <i class="fas fa-pencil-alt"></i>
+            </span>
+            <!--#CC01 start-->
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @if (element.status == "Active")
+
+            {
+                <span data-toggle="tooltip" title="Deactivate" onclick="triggerdelete(event)">
+                    <i class="fas fa-user-alt" style="color:red" data-record="@element.userId"></i>
+                </span>
+            }
+            else
+            {
+                <span data-toggle="tooltip" title="Deactivate">
+                    <i class="fas fa-user-alt" style="color:#ff9999"></i>
+                </span>
+            }
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @if (element.status == "Deactivated" || element.status== "Suspended")
+            {
+                <span data-toggle="tooltip" title="Activate" onclick="triggeractivate(event)">
+                    <i class='fas fa-user-alt' style="color:green" data-record="@element.userId"></i>
+                </span>
+            }
+            else
+            {
+                <span data-toggle="tooltip" title="Activate">
+                    <i class='fas fa-user-alt' style="color:#80ff80"></i>
+                </span>
+            }
+        </span>
+        <!--#CC01 end-->
+    </td>
+
+        }
+
+    </tr>
+
+}
+
+

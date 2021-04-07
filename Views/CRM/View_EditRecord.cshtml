@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "View_EditRecord";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ <!--Author:Sagar Srivastava,
+       Aim:Contains cshtml code common to view pages,
+       Change Log: code ,developer name ,task description ,date
+      =========================================================================================
+       #CC01 ,Chandan Singh ,Edit user list ,05-feb-2021
+       -->
+@model CRM.Models.UserEditModel
+<div class="Form_container">
+    <!--#CC01 start-->
+    <form action="@Url.Action( "EditUser" ,"CRM")" method="post">
+        <div class="form_wrp">
+            <label for="#">
+                User Name<span style="color:red;">*</span>
+                @Html.TextBox("username", Model.userDetail.username, new { @minlength = 4, @maxlength = 25, @placeholder = "User Name...", @required = "required", @id = "UserName" })
+            </label>
+            <label for="#">
+                Email<span style="color:red;">*</span>
+                @Html.TextBox("email", Model.userDetail.email, new { @type = "email", @placeholder = "Enter Email...", @id = "Email", @maxlength = 36, @required = "required" })
+            </label>
+            <label for="#">
+                Phone Number<span style="color:red;">*</span>
+                @Html.TextBox("phNo", Model.userDetail.phNo, new { @placeholder = "Enter Phone Number...", @minlength = 10, @maxlength = 10, @id = "phNo", @required = "required", oninput = "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" })
+            </label>
+            <label for="#">
+                Phone Number (What's App)<span style="color:red;">*</span>
+                @Html.TextBox("whatsappPhNo", Model.userDetail.whatsappPhNo, new { @placeholder = "Enter Phone Number (What's App)...", @minlength = 10, @maxlength = 10, @id = "whatsappPhNo", @required = "required", oninput = "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" })
+            </label>
+            <label for="#">
+                SkypId<span style="color:red;">*</span>
+                @Html.TextBox("skypeId", Model.userDetail.skypeId, new { @placeholder = "Enter skype Id...", @id = "skypeId", @minlength = 6, @maxlength = 36, @required = "required", })
+            </label>
+            <label for="#">
+                Password<span style="color:red;">*</span>
+                @Html.TextBox("password", Model.userDetail.password, new { @type = "password", @placeholder = "Enter password", @minlength=8 ,@maxlength=16 ,@pattern=@"(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" ,@id = "password", @required = "required",@title="string must be 8 characters long and contain at least 1 lowercase ,1 uppercase alphabet ,1 numeric character and at least one special character" })
+            </label>
+            <input type="hidden" name="userId" value="@Model.userDetail.userId" />
+            <label for="#">
+                User Role<span style="color:red;">*</span>
+                <select name="userType">
+                    <option>Select User Role</option>
+                    @foreach (var element in Model.list)
+                    {
+                        if (Model.userDetail.userType == element.roleId)
+                        {
+                            <option value="@element.roleId" selected="selected">@element.role</option>
+                        }
+                        else
+                        {
+                            <option value="@element.roleId">@element.role</option>
+
+                        }
+
+                    }
+
+                </select>
+            </label>
+
+            <label for="#">
+                Date of creation
+                <input type="date" name="createdDate" id="datePicker" value='@DateTime.Now' required>
+            </label>
+            <!--#CC01 end-->
+            <label for="#" class="Submit_wrp">
+                <input type="submit" value="Submit" id="submit">
+            </label>
+        </div>
+    </form>
+</div>

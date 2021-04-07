@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title </title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="~/Content/fontawesome-free-5.15.1-web/css/all.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/js/main.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <!--
+        Author:Sagar Srivastava,
+        Aim:Contains cshtml code common to view pages,
+        Change Log: code ,developer name ,task description ,date
+       =========================================================================================
+        #CC01 ,Chandan Singh ,Log out tool tip ,30-Jan-2021
+        #CC02 ,Chandan Singh ,Add record link remove ,03-feb-2021
+        -->
+</head>
+<body>
+    <main>
+        @*<header>
+            <div class="container">
+                <div class="Head_wrp">
+                    <div class="logo H_cmn">
+                        <a href="#">
+                            <img src="~/image/logo.png" />
+                        </a>
+                    </div>
+                    <div class="Rside H_cmn">
+                        <a href="#">Admin</a>
+                    </div>
+                </div>
+            </div>
+        </header>*@
+        @*<header>
+            <div class="container">
+                <div class="Head_wrp">
+                    <div class="logo H_cmn">
+                        <a href="#">
+                            <img src="~/image/logo.png" alt="logo" />
+                        </a>
+                    </div>
+                    <div class="Rside H_cmn">
+                        <span>
+                            <i class="fas fa-user-tie"></i>
+                        </span>
+                        <span><h2>User</h2></span>
+                    </div>
+                </div>
+            </div>
+        </header>*@
+
+        <header>
+            <div class="container">
+                <div class="Head_wrp">
+                    <div class="logo H_cmn">
+                        <a href="@Url.Action("Login" ,"Account")">
+
+                            <img src="~/image/logo1.png"  alt="logo">
+                        </a>
+                    </div>
+                    <div class="Rside H_cmn">
+                        <span class="User01">
+                            <!--#CC01 start-->
+                            <i class="fas fa-user-tie"></i>
+                            <!--#CC01 end-->
+                        </span>
+                        <div class="Profile-wrp">
+                            <ul>
+                                <li title="ProfileName">@ViewBag.username (@ViewBag.Role)</li>
+                                 <li  onclick="location.href='/Account/LogOff'" data-toggle="tooltip" title="LogOut">Log out</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="body-content">
+            @RenderBody()
+
+        </div>
+        <!-- sidebar -->
+        <section class="sidebar">
+            <div id="mySidenav" class="sidenav">
+                <div class="log2">
+                    <img src="/image/logo.png" alt="">
+                </div>
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <div class="Content-wrp">
+                    <ul>
+                        <li> <a href="@Url.Action("Index" ,"CRM")">Add User</a></li>
+                        <li> <a href="@Url.Action("Details" ,"CRM")">View Records</a></li>
+                        <li> <a href="@Url.Action("ViewUserList", "CRM")">View User List</a></li>
+                        <!--#CC02 start-->
+                        @*<li> <a href="@Url.Action("AddUser", "CRM")">Add User</a></li>*@
+                        <!--#CC02 End-->
+                    </ul>
+                </div>
+            </div>
+            <span class="OpenBtn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; </span>
+        </section>
+    </main>
+    <script src="~/Scripts/js/main.js"></script>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

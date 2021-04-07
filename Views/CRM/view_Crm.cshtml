@@ -1,0 +1,136 @@
+﻿@using CRM.Models
+
+@{
+    ViewBag.Title = "Manage Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+@model CRM.Models.UserDropDown_List
+
+@*<form action="@Url.Action( "Create" ,"CRM")" method="post">
+        <div class="container" style="padding:20px;">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        User Name
+                    </label>
+                    @Html.TextBox("username","" , new {  @class = "form-control", @placeholder = "User Name..." })
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        Email
+                    </label>
+                    @Html.TextBox("email","" , new { @class = "form-control", @placeholder = "Enter Email..." })
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        Phone Number
+                    </label>
+                    @Html.TextBox("phNo","" , new {  @class = "form-control", @placeholder = "Phone Number..." })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        WhatsApp Phone Number
+                    </label>
+                    @Html.TextBox("whatsappPhNo", "" , new {  @class = "form-control", @placeholder = "WhatsApp Phone Number..." })
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        Role
+                    </label>
+                    <select class="form-control" name="userType">
+                        <option>Select a role</option>
+                        @foreach (var ele in Model.roleList.list)
+                        {
+                            <option value="@ele.roleId">@ele.role</option>
+
+                        }
+                    </select>
+
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        Order Number
+                    </label>
+                    @Html.TextBoxFor(m=>m.request.orderNo ,new { @name="orderNo" ,@class="form-control" ,@placeholder="Order Number..." })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        Remarks
+                    </label>
+                    @Html.TextBoxFor(m => m.request.remarks, new { @name = "remarks", @class = "form-control", @placeholder = "Remarks..." })
+                </div>
+                <div class="col-md-4">
+                    <label>
+
+                    </label>
+                    <input type="submit" class="form-control" value="Submit" />
+                </div>
+            </div>
+        </div>
+    </form>*@
+
+<!-- Form -->
+<div class="Form_container">
+    <form action="@Url.Action( "Create" ,"CRM")" method="post">
+        <div class="form_wrp">
+            @*<label for="#">
+                User Name
+                @Html.TextBox("username", "", new { @placeholder = "User Name...", @required = "required", @id = "UserName" })
+                <input type="text" name="UserName" id="UserName" placeholder="UserName" required>
+            </label>
+            <label for="#">
+                Email
+                <input type="text" name="Email" id="Email" placeholder="Email" required>
+                @Html.TextBox("email", "", new { @placeholder = "Enter Email...", @id = "Email" })
+            </label>
+            <label for="#">
+                Phone Number
+                @Html.TextBox("phNo", "", new { @placeholder = "Phone Number...", @type = "number", min = "0", @max = "10000000000", @id = "PhoneNumber" })
+                <input type="number" name="PhoneNumber" type="number" min="0" max="10" placeholder="PhoneNumber" id="PhoneNumber" required>
+            </label>
+            <label for="#">
+                Skype Id
+                <input type="text" name="Skype" placeholder="Skype" id="Skype">
+            </label>
+            <label for="#">
+                WhatsApp Number
+                <input type="number" name="WhatsNumber" min="0" max="10" placeholder="WhatsNumber" id="WhatsNumber">
+                @Html.TextBox("whatsappPhNo", "", new { @min = "0", @type = "number", @placeholder = "WhatsApp Phone Number...", @id = "WhatsNumber" })
+            </label>*@
+            <label for="#">
+                User
+                <select name="userid">
+                    <option>Select User</option>
+                   @foreach (var element in Model.list)
+                   {
+                       <option value="@element.UserId">@element.UserName</option>
+                   }
+
+                </select>
+            </label>
+            <label for="#">
+                Order Number
+                @Html.TextBox("orderNo" ,"" , new { @name = "orderNo", @placeholder = "Order Number...", @id = "OrderNumber" })
+                @*<input type="text" name="OrderNumber" placeholder="OrderNumber" id="OrderNumber" required>*@
+            </label>
+            <label for="#">
+                @Html.TextArea("remarks","" , new { @name = "remarks", @placeholder = "Remarks...", @cols = "30", @rows = "10" })
+
+                @*<textarea name="Remark" id="" cols="30" rows="10" placeholder="Remark" placeholder="REmarks"></textarea>*@
+            </label>
+            <label for="#">
+                <input type="date" name="createdDate" id="datePicker" required>
+            </label>
+            <label for="#">
+                <input type="submit" value="Submit" id="submit">
+            </label>
+        </div>
+    </form>
+</div>

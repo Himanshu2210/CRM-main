@@ -1,0 +1,605 @@
+﻿
+@{
+    ViewBag.Title = "View Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model CRM.Models.RecordsView_List
+
+@*<!--
+     Author:Sagar Srivastava,
+     Aim:Contains cshtml code common to view pages,
+     Change Log: code ,developer name ,task description ,date
+    =========================================================================================
+     #CC01 ,Chandan Singh ,Edit tool tip ,30-Jan-2021
+     #CC02 ,Chandan Singh ,Delete tool tip ,30-Jan-2021
+     #CC03 ,Chandan Singh ,Delete tool tip ,30-Jan-2021
+     #CC04 ,Chandan Singh ,create clinte deatails form validatoin ,30-Jan-2021
+     #CC05 ,Chandan Singh ,Use glyphicon for delete popup ,04-feb-2021
+     #CC06 ,Chandan Singh ,excel tool tip ,30-Jan-2021
+     #CC07 ,Chandan Singh ,Edit record success messege ,30-Jan-2021
+     #CC08 ,Chandan Singh ,table header add colunm Action ,13-feb-2021
+     #CC09 ,Chandan Singh ,change excel and create record palce ,13-feb-2021
+     -->*@
+@*<div class="container">
+        <div style="margin-top:30px;">
+
+            <input type="text" value="" class="search form-control" />
+            <input type="button" value="Search" class="search form-control" data-target=".search" onclick="searchRecords();" />
+        </div>
+
+        <table style="margin-top:50px;font-size:10px; ">
+            <thead>
+                <tr style=" font-size:13px;font-weight: 600;margin-bottom:20px;">
+
+                    <th class="col-md-1">
+                        User Name
+                    </th>
+                    <th class="col-md-1">
+                        Email
+                    </th>
+                    <th class="col-md-1">
+                        Whatsapp Phone Number
+                    </th>
+                    <th class="col-md-1">
+                        Phone Number
+                    </th>
+                    <th class="col-md-1">
+                        Role
+                    </th>
+                    <th class="col-md-1">
+                        Order Id
+                    </th>
+                    <th class="col-md-1">
+                        Order No
+                    </th>
+                    <th class="col-md-1">
+                        Date of Creation
+                    </th>
+                    <th class="col-md-1">
+                        Last Updated Date
+                    </th>
+                    <th class="col-md-1">
+                        Remarks
+                    </th>
+                    <th class="col-md-1">
+                    </th>
+                    <th class="col-md-1">
+                    </th>
+                </tr>
+            </thead>
+            @foreach (var element in Model.list)
+            {
+                <tr class="row" id="@element.orderId" style="margin-bottom:10px;">
+
+                    <td class="col-md-1">
+                        @element.username
+                    </td>
+                    <td class="col-md-1">
+                        @element.email
+                    </td>
+                    <td class="col-md-1">
+                        @element.whatsappPhNo
+                    </td>
+                    <td class="col-md-1">
+                        @element.phNo
+                    </td>
+                    <td class="col-md-1">
+                        @element.userRole
+                    </td>
+                    <td class="col-md-1">
+                        @element.orderId
+                    </td>
+                    <td class="col-md-1">
+                        @element.orderNo
+                    </td>
+                    <td class="col-md-1">
+                        @element.createdDate
+                    </td>
+                    <td class="col-md-1">
+                        @element.lastUpdatedDate
+                    </td>
+                    <td class="col-md-1">
+                        @element.remarks
+                    </td>
+                    <td class="col-md-1">
+                        <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit" ,"CRM")?id= @element.orderId'" data-record="@element.orderId">Edit</button>
+                    </td>
+                    <td class="col-md-1">
+                        <button class=" btn btn-danger btn-sm confirm-delete" data-toggle="modal" data-target="#deleteModal" data-record="@element.orderId">Delete</button>
+                    </td>
+                </tr>
+
+            }
+
+        </table>
+
+        <div id="deleteModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                 Modal content
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete the record #<span id="recordid"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete the records?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row text-center">
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-success confirm-delete">Yes</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>*@
+
+<div class="searchbar">
+    <div class="container">
+        <div class="Srch_child">
+            <label>
+                <input type="text" id="input-search" name="Search" value="@Model.filter" placeholder="Search..." onchange="search(event)">
+            </label>
+            <label>
+                <input type="date" id="date-input" name="date" value="@Model.datefilter" placeholder="" onchange="search(event)">
+            </label>
+            <!--CC09  added start-->
+            <div class="Btn_group">
+                <!--CC06  added start-->
+                <button   type="button" title="Download In Excel" class="btn btn-primary BTN1" onclick="excelExport(event)">
+                    <i class="fa fa-download" aria-hidden="true"></i> DOWNLOAD
+                </button>
+                <button   type="button" title="Create New Record" class="btn bg-primary BTN2" onclick="myPopup()">
+                    <i class="fas fa-plus"></i>ADD RECORD
+                </button>
+                <!--CC06  added end-->
+            </div>
+            <!--CC09  added end-->
+        </div>
+    </div>
+</div>
+<div class="Table_wrapper">
+    <div class="container">
+        <div class="Table-content-wrp">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Agent Name</th>
+                        <th>Client Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Skype Id  </th>
+                        <th>WhatsApp Number</th>
+                        <th>Order Number</th>
+                        <th>Date of Creation</th>
+                        <th>Remarks</th>
+                        <!--CC08  added start-->
+                        <th>Action</th>
+                        <!--CC06  added end-->
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    @foreach (var element in Model.list)
+                    {
+                        <tr class="row" id="@element.leadId" style="margin-bottom:10px;">
+                            <td>
+                                @element.agentname
+                            </td>
+                            <td>
+                                @element.clientname
+                            </td>
+                            <td>
+                                @element.email
+                            </td>
+                            <td>
+                                @element.phNo
+                            </td>
+                            <td>
+                                @element.skypeid
+                            </td>
+                            <td>
+                                @element.whatsappPhNo
+                            </td>
+
+                            <td>
+                                @element.orderNo
+                            </td>
+                            @*<td>
+                            @element.createdDate
+                        </td>*@
+                            <td>
+                                @element.createdDate
+                            </td>
+                            <td class="col-md-1">
+                                @element.remarks
+
+                            </td>
+                            @*<td class="col-md-1">
+                            <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit" ,"CRM")?id= @element.orderId'" data-record="@element.orderId">Edit</button>
+                        </td>
+                        <td class="col-md-1">
+                            <button class=" btn btn-danger btn-sm confirm-delete" data-toggle="modal" data-target="#deleteModal" data-record="@element.orderId">Delete</button>
+                        </td>*@
+                            <td class="Lst_td">
+                                <span class="link_span">
+                                    @if (ViewBag.role == "admin")
+                                    {
+                                        /*#CC01  added start*/
+                                        <a href="#" data-toggle="tooltip" title="Edit" style="margin-right:16px">
+
+                                            <i class="fas fa-pencil-alt" onclick="EditRecord('@Url.Action("Edit", "CRM")?id= @element.leadId')" data-record="@element.leadId"></i>
+                                        </a>/*#CC01  added end*/
+                                    }
+
+                                    @if (ViewBag.role != "user")
+                                    {
+                                        /*#CC02  added start*/
+                                        <a href="#" class="btn-delete" data-toggle="tooltip" title="Delete">
+
+                                            <i class="fas fa-trash-alt" data-record="@element.leadId"></i>
+                                        </a>/*#CC02  added end*/
+                                    }
+                                    @*<a href="#">
+                                    <i class="fas fa-tasks confirm-delete" data-record="@element.leadId"></i>
+                                </a>*@
+
+                                </span>
+                            </td>
+                        </tr>
+
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div> 
+</div>
+
+<!-- Popup -->
+
+<div class="popup" id="main01">
+    <div class="content">
+        <div class="Form_container">
+            <span id="close01" onclick="manageModel();" class="close" title="Close Modal">×</span> 
+            <!--CC04  added start-->
+            <form action="@Url.Action( "Create" ,"CRM")" method="post" id="modelform" onsubmit="manageLink(event);" onclick="return validateFn()">
+                @Html.Hidden("leadid", "", new { @id = "leadid" })
+             
+
+                <div class="form_wrp">
+                    <label for="#">
+                        Agent Name<span style="color:red;">*</span>
+                        @Html.TextBox("agentname", "", new { @placeholder = "Agent Name...", @required = "required", @id = "AgentName", @disabled = "disabled" })
+                    </label>
+                    <label for="#">
+                        Client Name<span style="color:red;">*</span>
+                        @Html.TextBox("clientname", "", new { @minlength = 4, @maxlength = 25, @placeholder = "Client Name...", @required = "required", @id = "ClientName", @pattern = @"^[a-zA-Z0-9]+$", @title = "Alphanumeric Characters only." })
+                    </label>
+
+                    <label for="#">
+                        Email<span style="color:red;">*</span>
+                        @Html.TextBox("email", "", new { @type = "email", @placeholder = "Enter Email...", @required = "required", @title = "Enter Valid Eamil Address", @pattern = @"^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", @id = "Email", @name = "email", @maxlength = 50 })
+                        <span id="lblError" style="color:red"></span>
+                    </label>
+                    <label for="#">
+                        Phone Number<span style="color:red;">*</span>
+                        @Html.TextBox("phNo", "", new { @placeholder = "Phone Number...", @type = "tel", @maxlength = 10, @minlength = 10, @id = "PhoneNumber", @required = "required", @pattern = @"[1-9]{1}[0-9]{9}", @title = "Please enter valid phone number ex: 9830204812" })
+                    </label>
+                    <label for="#">
+                        Skype Id<span style="color:red;">*</span>
+                        @Html.TextBox("skypeid", "", new { @placeholder = "Enter skypeid...", @id = "skypeid", @maxlength = 36, @minlength = 6, @required = "required" })
+                    </label>
+                    <label for="#">
+                        WhatsApp Number<span style="color:red;">*</span>
+                        @Html.TextBox("whatsappPhNo", "", new { @min = "0", @type = "tel", @placeholder = "WhatsApp Phone Number...", @maxlength = 10, @minlength = 10, @id = "WhatsNumber", @required = "required", @pattern = @"[1-9]{1}[0-9]{9}", @title = "Please enter valid phone number ex: 9830204812" })
+                    </label>
+                    @*<label for="#">
+                    Order Number
+                    @Html.TextBox("orderNo", "", new { @name = "orderNo", @placeholder = "Order Number...", @id = "OrderNumber" })
+                </label>*@
+                    <label for="#">
+                        Order Amount<span style="color:red;">*</span>
+                        @Html.TextBox("orderAmount", "", new { @name = "orderAmount", @placeholder = "Order Amount...", @id = "orderAmount", @maxlength = 10, @type = "number", @required = "required", oninput = "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" })
+                    </label>
+                    <label for="#">
+                        Date of creation<span style="color:red;">*</span>
+                        <input type="date" name="createdDate" id="createdDate" required>
+                    </label>
+                    <label for="#" class="Text_area">
+                        @Html.TextArea("remarks", "", new { @id = "remarks", @name = "remarks", @placeholder = "Remarks*...", @cols = "30", @rows = "10", @required = "required", maxlength = 250 })
+                        <br />
+                        <span>Max Length :250</span>
+                    </label>
+                    <label for="#" class="Submit_wrp">
+                        <input type="submit" value="Submit" id="submit">
+                    </label>
+                </div>
+                <!--CC04  added end-->
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.response == "success")
+{
+    <!-- pop up-2 -->
+    <div id="main02" style="display:block;">
+        <div class="cnt02">
+            <div class="Thanks">
+                <div class="content02">
+                    <strong>
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
+                    </strong>
+                    <h3>Record Created</h3>
+                    <span id="close02" onclick="location.href = '@Url.Action("Details", "CRM")'" class="close" title="Close Modal">Close</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<!-- #CC07 start -->
+@if (ViewBag.response == "Editsuccess")
+{
+    <!-- pop up-2 -->
+    <div id="main02" style="display:block;">
+        <div class="cnt02">
+            <div class="Thanks">
+                <div class="content02">
+                    <strong>
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
+                    </strong>
+                    <h3>Record Updated</h3>
+                    <span id="close02" onclick="location.href = '@Url.Action("Details", "CRM")'" class="close" title="Close Modal">Close</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<!-- #CC07 end -->
+<!-- pop are you sure -->
+<div id="main03" style="display:none;">
+    <div class="cnt02">
+        <div class="Thanks">
+            <div class="content02">
+                <h3>Are you sure want to delete ?</h3>
+                <!-- <strong><i class="fa fa-check" aria-hidden="true"></i></strong> -->
+                <!--CC05  added start-->
+                <span id="close02" class="close confirm-delete" title="Close Modal">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                    @*OK*@
+                </span>
+                <span id="close02" onclick="document.getElementById('main03').style.display='none'" style="background: red; color: #ffffff;" class="close" title="Close Modal">
+                <i class="fa fa-times" style="color:black" aria-hidden="true"></i> 
+                @*Cancle*@
+                </span>
+                <!--CC05  added end-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- pop modeldelte-->
+<div id="modeldelete">
+    <div class="cnt02">
+        <div class="cnt02">
+            <div class="Thanks">
+                <div class="content02">
+                    <strong>
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
+                    </strong>
+                    <h3>Record Deleted</h3>
+                    <span id="close02" onclick="comfirm()" class="close" title="Close Modal">Ok</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @if (!string.IsNullOrEmpty(ViewBag.recordStatus))
+    {
+        <script>
+          $(document).ready(function () {
+              swal("Sorry!", '@ViewBag.recordStatus')
+                  .then((value) => {
+                      location.href = '@Url.Action("Details", "CRM")'
+                  });
+          });
+        </script>
+    }
+    
+    <script>
+    var search = (event) => {
+               var filter = $('#input-search').val();
+        var datefilter = $('#date-input').val();
+        debugger
+        var mode = 0
+        if (event.currentTarget != undefined && event.currentTarget.name === "date")
+            mode = 2
+        location.href = '@Url.Action("FilterRecords" ,"CRM")?filter=' + filter + '&dateFilter=' + datefilter + '&mode=' + mode;
+    }
+
+        function manageModel() {
+            document.getElementById("modelform").reset();
+        document.getElementById('main01').style.display = 'none';
+
+    }
+
+    function myPopup() {
+        var x = document.getElementById("main01");
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+            $('#AgentName').val('@ViewBag.username');
+
+        }
+    }
+    </script>
+
+    <script>
+
+    var myHistory = [];
+
+//function pageLoad() {
+//    window.history.pushState(myHistory, "<name>", "<url>");
+
+//    //Load page data.
+//    }
+
+    function manageLink(event) {
+        debugger
+        var x = $('#remarks').val();
+        if (x.length > 250) {
+            event.preventDefault();
+            $('#remarks').val("Length of content should be less than 250.");
+            $('#remarks').css('color', 'red');
+        }
+        else
+        location.replace('@Url.Action( "Details" ,"CRM")');
+    }
+
+    //$(document).ready(function () {
+    //    pageLoad();
+    //});
+            var comfirm = event => {
+                location.href = '@Url.Action("Details" ,"CRM")';
+                     }
+            var excelExport = event => {
+                      var filter = $('#input-search').val();
+                     var datefilter = $('#date-input').val();
+                     debugger
+                var mode = 0
+                if (datefilter != undefined && datefilter != "")
+                    mode = 2
+
+                console.log(mode);
+                     location.href = '@Url.Action("ExportRecords" ,"CRM")?filter=' + filter + '&dateFilter=' + datefilter + '&mode=' + mode;
+            }
+            function EditRecord (url) {
+                        $.ajax({
+                url: url ,
+                method: 'GET',
+                processData: false,
+                dataType: "json",
+                contentType: "application/json",
+                            success: data => {
+                                debugger
+                    $('#AgentName').val(data.agentname)
+                    $('#ClientName').val(data.clientname)
+                    $('#Email').val(data.email)
+                    $('#PhoneNumber').val(data.phNo)
+                    $('#orderAmount').val(data.orderamount)
+                    $('#WhatsNumber').val(data.whatsappPhNo)
+                    $('#skypeid').val(data.skypeid)
+                    //$('#createdDate').val(data.createdDate)
+                   // document.getElementById('createdDate').valueAsDate = Date.parse(data.createdDate);
+                   // document.getElementById("createdDate").value = Date.parse(data.createdDate);
+                    $('#remarks').val(data.remarks)
+                    $('#leadid').attr('value', data.leadId)
+                    $('#modelform').attr('action', '@Url.Action("Edit" ,"CRM")')
+
+
+                    myPopup();
+
+                },
+                error: function () {
+
+                }
+            });
+
+        }
+
+
+    $(document).ready(function () {
+        $('.btn-delete').click(function (event) {
+            @*location.href='@Url.Action("Delete" ,"CRM")?recordId='+event.target.dataset.record;*@
+            //$('#close02').html(event.target.dataset.record)
+            $('.confirm-delete').attr('data-id', event.target.dataset.record)
+            mDelete();
+        });
+
+
+        $('.confirm-delete').click(function (event) {
+            var record = {
+                recordId: event.target.dataset.id
+            }
+                     debugger
+            $.ajax({
+                url: '@Url.Action("Delete","CRM")' ,
+                method: 'POST',
+                data: JSON.stringify(record),
+                processData: false,
+                dataType: "json",
+                contentType: 'application/json',
+                async: false,
+                success: function () {
+                    debugger
+                    $('#' + event.target.dataset.record).remove();
+
+
+                },
+                error: function () {
+
+                }
+            });
+            location.href = '@Url.Action("Details" ,"CRM")';
+
+        });
+    });
+    </script>
+
+    @*<script>
+            $(document).ready(function () {
+                $("#input-search").on("keyup", function () {
+                    if (myTable != null) {
+                        var value = $(this).val().toLowerCase();
+                        debugger
+                        var result = $("#myTable tr").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    }
+
+                });
+            });
+        </script>*@
+
+    @*<script type="text/javascript">
+            function ValidateEmail(event) {
+                debugger
+                var email = document.getElementById("txtEmail").value;
+                var lblError = document.getElementById("lblError");
+                lblError.innerHTML = "";
+                var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+                if (!expr.test(email)) {
+                    $('#SubmitProject').attr('disabled', true);
+                    lblError.innerHTML = "Invalid email address.";
+                }
+                else {
+                    $('#SubmitProject').attr('disabled', false);
+                }
+            }
+
+            $(window).on("unload", function (e) {
+                alert("call");
+                console.log("this will be triggered");
+            });
+        </script>*@

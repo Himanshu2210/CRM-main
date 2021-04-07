@@ -1,0 +1,375 @@
+﻿
+@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string message = string.Empty;
+    if (!string.IsNullOrEmpty(Model.message))
+    {
+        message = Model.message;
+    }
+}
+@model CRM.Models.user_List
+
+<!--
+       Author:Sagar Srivastava,
+       Aim:Contains cshtml code common to view pages,
+       Change Log: code ,developer name ,task description ,date
+      =========================================================================================
+       #CC01 ,Chandan Singh ,Active & Deavtive button tooltip ,02-feb-2021
+       #CC02 ,Chandan Singh ,search Vailidation ,02-feb-2021
+       #CC03 ,Chandan Singh ,excel button tool tip ,30-Jan-2021
+       #CC04 ,Chandan Singh ,userlist updated success message ,11-feb-2021
+
+       -->
+@*<div class="container">
+        <div style="margin-top:30px;">
+
+            <input type="text" value="" class="search form-control" />
+            <input type="button" value="Search" class="search form-control" data-target=".search" onclick="search();" />
+        </div>
+        <table style="margin-top:50px;font-size:10px; ">
+            <thead>
+                <tr style=" font-size:13px;font-weight: 600;margin-bottom:20px;">
+
+                    <th class="col-md-1">
+                        User Name
+                    </th>
+                    <th class="col-md-1">
+                        Email
+                    </th>
+                    <th class="col-md-1">
+                        Whatsapp Phone Number
+                    </th>
+                    <th class="col-md-1">
+                        Phone Number
+                    </th>
+                    <th class="col-md-1">
+                        Role
+                    </th>
+                    <th class="col-md-1">
+                        SkypeId
+                    </th>
+                    <th class="col-md-1">
+                        Status
+                    </th>
+                    <th class="col-md-1">
+                    </th>
+                    <th class="col-md-1">
+                    </th>
+                </tr>
+            </thead>
+            @foreach (var element in Model.list)
+            {
+        <tr class="row" id="@element.userId" style="margin-bottom:10px;">
+
+            <td class="col-md-1">
+                @element.username
+            </td>
+            <td class="col-md-1">
+                @element.email
+            </td>
+            <td class="col-md-1">
+                @element.whatsappPhNo
+            </td>
+            <td class="col-md-1">
+                @element.phNo
+            </td>
+            <td class="col-md-1" data-id="@element.userType">
+                @element.role
+            </td>
+            <td class="col-md-1">
+                @element.skypeId
+            </td>
+            <td class="col-md-1">
+                @element.status
+            </td>
+            <td class="col-md-1">
+                <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("EditUser" ,"CRM")?id= @element.userId'" data-record="@element.userId">Edit</button>
+            </td>
+            <td class="col-md-1">
+                <button class=" btn btn-danger btn-sm confirm-delete-user" data-toggle="modal" data-target="#deleteModal" data-record="@element.userId">Delete</button>
+            </td>
+            <td class="col-md-1">
+                <button class=" btn btn-danger btn-sm confirm-activate-user" data-toggle="modal" data-target="#deleteModal" data-record="@element.userId">Activate</button>
+            </td>
+        </tr>
+
+            }
+
+        </table>
+
+        <div id="deleteModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                 Modal content
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete the record #<span id="recordid"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete the records?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row text-center">
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-success confirm-delete">Yes</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            var search = () => {
+                var filter = $(event.target.dataset.target).val();
+                location.href = '@Url.Action("FilterUserList" ,"CRM")?filter=' + filter;
+            }
+                        $('.confirm-activate-user').click(function (event) {
+                debugger
+            var record = {
+                recordId: event.target.dataset.record
+            }
+
+            $.ajax({
+                url: '@Url.Action("ActivateUser","CRM")' ,
+                method: 'POST',
+                data: JSON.stringify(record),
+                processData: false,
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+                    debugger
+                    location.href = '@Url.Action("ViewUserList" ,"CRM")';
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+            $('.confirm-delete-user').click(function (event) {
+                debugger
+            var record = {
+                recordId: event.target.dataset.record
+            }
+
+            $.ajax({
+                url: '@Url.Action("DeleteUser","CRM")' ,
+                method: 'POST',
+                data: JSON.stringify(record),
+                processData: false,
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+                    debugger
+                },
+                error: function () {
+
+                }
+            });
+                                    location.href = '@Url.Action("ViewUserList" ,"CRM")';
+
+        });
+
+        </script>
+    </div>*@
+
+
+
+<div class="searchbar">
+    <div class="container">
+        <div class="Srch_child">
+            <!--#CC02 start-->
+            <label>
+                <input type="text" id="input-search" maxlength="15" name="Search" placeholder="Search..." value="@Model.filter" onchange="search()">
+            </label>
+            <!--#CC02 end-->
+            <label>
+                <input type="date" id="date-input" name="date" placeholder="" value="@Model.dateFilter" onchange="search()">
+            </label>
+            <div class="Btn_group">
+                <button   type="button" class="btn btn-primary BTN1" onclick="excelExport(event)">
+                    <i class="fa fa-download" aria-hidden="true"></i> DOWNLOAD
+                </button><!--CC06  added end-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="Table_wrapper"> 
+    <div class="container">
+        <div class="Table-content-wrp">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Agent Name</th>
+                        <th>Email</th>
+                        <th>Whatsapp </th>
+                        <th>Phone  </th>
+                        <th>Role</th>
+                        <th>SkypeId</th>
+                        <th>Status</th>
+                        <!--<th>-->
+                        <!--CC03  added start-->
+                        <!--<span data-toggle="tooltip" title="DownLoad Excel File" onclick="excelExport(event)">-->
+                        <!--CC03  added end-->
+                        <!--<i class="fa fa-download" aria-hidden="true"></i>
+        </span>
+    </th>-->
+                        @if (ViewBag.role != "user")
+                        {
+                            <th>Action</th>
+                        }
+                        </tr>
+                </thead>
+                <tbody id="myTable">
+                    @{Html.RenderPartial("partial_records");}
+
+                </tbody>
+            </table>
+          </div>
+     </div>
+            <!-- Record actived pop up -->
+            <!--#CC01 start-->
+            <div id="main04" class="popup_cmn">
+                <div class="cnt02">
+                    <div class="Thanks">
+                        <div class="content02">
+                            <h3>User Activate</h3>
+                            @*<strong><i class="fa fa-check" aria-hidden="true"></i></strong>*@
+                            <span id="close02" onclick="document.getElementById('main04').style.display='none'" class="close  confirm-activate-user" title="Close Modal">OK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- pop up-4 -->
+            <div id="main03" class="popup_cmn">
+                <div class="cnt02">
+                    <div class="Thanks">
+                        <div class="content02">
+                            <h3>Are you sure want to Deactivate ?</h3>
+                            <!-- <strong><i class="fa fa-check" aria-hidden="true"></i></strong> -->
+                            <span id="close02" onclick="document.getElementById('main03').style.display='none'" class="close" title="Close Modal">cancel</span>
+                            <span id="close02" style="background: red; color: #ffffff;" class="close confirm-delete-user" title="Close Modal">Deactivate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--#CC01 end-->
+            <!--#CC04 start-->
+            @if (ViewBag.massage == "editsuccess")
+            {
+                <!-- pop up-2 -->
+                <div id="main02" style="display:block;">
+                    <div class="cnt02">
+                        <div class="Thanks">
+                            <div class="content02">
+                                <strong>
+                                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                    </svg>
+                                </strong>
+                                <h3>User List Updated</h3>
+                                <span id="close02" onclick="location.href = '@Url.Action("ViewUserList", "CRM")'" class="close" title="Close Modal">Close</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!--#CC04 end-->
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <script>
+          $(document).ready(function () {
+              swal("Sorry!", '@message')
+                  .then((value) => {
+                      location.href = '@Url.Action("ViewUserList", "CRM")'
+                  });
+          });
+                </script>
+            }
+            <script>
+        var excelExport = event => {
+            debugger
+                      var filter = $('#input-search').val();
+                var datefilter= $('#date-input').val();
+            location.href = '@Url.Action("ExportUserList" ,"CRM")?filter=' + filter + '&dateFilter=' + datefilter;
+            }
+        var triggerdelete = event => {
+            debugger
+            $('.confirm-delete-user').attr('data-record' ,event.target.dataset.record);
+            mDelete();
+        }
+
+       var triggeractivate = event => {
+            debugger
+            $('.confirm-activate-user').attr('data-record' ,event.target.dataset.record);
+             recordFn()
+        }
+        var search = () => {
+            debugger
+                var filter = $('#input-search').val();
+                var datefilter= $('#date-input').val();
+                location.href = '@Url.Action("FilterUserList" ,"CRM")?filter=' + filter+'&dateFilter='+datefilter;
+            }
+                        $('.confirm-activate-user').click(function (event) {
+                debugger
+            var record = {
+                recordId: event.target.dataset.record
+            }
+
+            $.ajax({
+                url: '@Url.Action("ActivateUser","CRM")' ,
+                method: 'POST',
+                data: JSON.stringify(record),
+                processData: false,
+                contentType: "application/json",
+                success: function (data) {
+                      //$('#main03').hide();
+                    $('#myTable').html(data);
+                    debugger
+                },
+                error: function (error) {
+
+                }
+            });
+
+        });
+
+            $('.confirm-delete-user').click(function (event) {
+                debugger
+            var record = {
+                recordId:event.target.dataset.record
+            }
+
+            $.ajax({
+                url: '@Url.Action("DeleteUser","CRM")' ,
+                method: 'POST',
+                data: JSON.stringify(record),
+                processData: false,
+                contentType: "application/json",
+                success: function (data) {
+                    debugger
+                    $('#main03').hide();
+                    $('#myTable').html(data);
+                     // location.href = '@Url.Action("ViewUserList" ,"CRM")';
+                },
+                error: function (error) {
+
+                }
+            });
+         @*location.href = '@Url.Action("ViewUserList" ,"CRM")';*@
+
+        });
+
+            </script>
+        </div>
+
+        @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+
+

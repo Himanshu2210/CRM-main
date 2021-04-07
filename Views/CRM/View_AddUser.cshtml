@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewBag.Title = "View_AddUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model CRM.Models.UserDetail
+<!--
+        Author:Sagar Srivastava,
+        Aim:Contains cshtml code common to view pages,
+        Change Log: code ,developer name ,task description ,date
+       =========================================================================================
+        #CC01 ,Chandan Singh ,required field in user role dropdwon ,30-Jan-2021
+        #CC02 ,Chandan Singh ,email vailidation in textbox,30-Jan-2021
+        #CC03 ,Chandan Singh ,username custom vailidatoin in textbox,30-Jan-2021
+        #CC04 ,Chandan Singh ,after add user submit created success masseage ,30-Jan-2021
+        -->
+@*<div class="Form_container">
+        <form action="@Url.Action( "AddUser" ,"CRM")" method="post">
+            <div class="form_wrp">
+                <label for="#">
+                        User Name
+                        @Html.TextBox("username", "", new { @placeholder = "User Name...", @required = "required", @id = "UserName" })
+                        <input type="text" name="UserName" id="UserName" placeholder="UserName" required>
+                    </label>
+                    <label for="#">
+                        Email
+                        <input type="text" name="Email" id="Email" placeholder="Email" required>
+                        @Html.TextBox("email", "", new { @placeholder = "Enter Email...", @id = "Email" })
+                    </label>
+                    <label for="#">
+                        Phone Number
+                        @Html.TextBox("phNo", "", new { @placeholder = "Phone Number...", @type = "number", min = "0", @max = "10000000000", @id = "PhoneNumber" })
+                        <input type="number" name="PhoneNumber" type="number" min="0" max="10" placeholder="PhoneNumber" id="PhoneNumber" required>
+                    </label>
+                    <label for="#">
+                        Skype Id
+                        <input type="text" name="Skype" placeholder="Skype" id="Skype">
+                    </label>
+                    <label for="#">
+                        WhatsApp Number
+                        <input type="number" name="WhatsNumber" min="0" max="10" placeholder="WhatsNumber" id="WhatsNumber">
+                        @Html.TextBox("whatsappPhNo", "", new { @min = "0", @type = "number", @placeholder = "WhatsApp Phone Number...", @id = "WhatsNumber" })
+                    </label>
+                <label for="#">
+                    User Role
+                    <select name="roleid">
+                        <option>Select User Role</option>
+                        @foreach (var element in Model.roleList.list)
+                        {
+                            <option value="@element.roleId">@element.role</option>
+                        }
+
+                    </select>
+                </label>
+
+                <label for="#">
+                    <input type="date" name="createdDate" id="datePicker" required>
+                </label>
+                <label for="#">
+                    <input type="submit" value="Submit" id="submit">
+                </label>
+            </div>
+        </form>
+    </div>*@
+
+<br />
+<br />
+<br />
+<div class="Form_container">
+    <form action="@Url.Action( "AddUser" ,"CRM")" method="post" onsubmit="return validateForm(this)" name="adduserform">
+        <div class="form_wrp">
+            <label for="#">
+                <!--#CC03 start-->
+                User Name<span style="color:red;">*</span>
+                @Html.TextBox("username", "", new { @placeholder = "User Name...", @*@required = " ",*@ name = "name", @*@id = " " ,*@ @maxlength=40 ,@minlength=5 @*@pattern=""@"^[a-zA-Z\d\-_\s]+$",*@ @*@title="Alphanumeric Characters only."*@ })
+                <!--#CC03 end-->
+            </label>
+            <label for="#">
+                <!--#CC02 start-->
+                Email<span style="color:red;">*</span>
+                @Html.TextBox("email", "", new { @placeholder = "Enter Email...", @required = "required", @id = "txtEmail", @name = "email", @onkeyup = "ValidateEmail()" ,@maxlength=40 ,@minlength=5 })
+                <span id="lblError" style="color:red"></span>
+            </label>
+            <!--#CC02 end-->
+            <label for="validationDefault04">
+                User Role<span style="color:red;">*</span>
+                <!--#CC01 start-->
+                <select name="roleid" id="roleSelect" required>
+                    <option selected disabled value="">--Select Role--</option>
+                    @foreach (var element in Model.roleList.list)
+                    {
+                        <option value="@element.roleId">@element.role</option>
+
+                    }
+                </select>
+                <!--#CC01 end-->
+                @*<span id="lblError1" style="color:red"></span>*@
+            </label>
+
+            <label for="#">
+                Date of creation
+                <input type="date" name="createdDate" id="datePicker" required>
+            </label>
+            <label for="#" class="Submit_wrp">
+                <input type="submit" value="Submit" id="SubmitProject" style="background-color: #002f34;color:white" onclick="ValidateRole(event)">
+            </label>
+        </div>
+    </form>
+</div>
+
+@*<script type="text/javascript">
+        function ValidateRole(event) {
+            debugger
+            var expr = document.getElementById("roleSelect").value;
+            if (expr === "0") {
+                $('#lblError1').html("fill textbox");
+                event.preventDefautl();
+            }
+        }
+    </script>*@
+<!--#CC02 start-->
+<script type="text/javascript">
+    function ValidateEmail(event) {
+        debugger
+        var email = document.getElementById("txtEmail").value;
+        var lblError = document.getElementById("lblError");
+        lblError.innerHTML = "";
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (!expr.test(email)) {
+            $('#SubmitProject').attr('disabled', true);
+            lblError.innerHTML = "Invalid email address.";
+        }
+        else {
+            $('#SubmitProject').attr('disabled', false);
+        }
+    }
+
+    $(window).on("unload", function (e) {
+        alert("call");
+        console.log("this will be triggered");
+    });
+</script>
+<!--#CC02 End-->
+<!--#CC04 start-->
+@if (ViewBag.Message == "User Added Successfully")
+{
+    <script>
+        $(document).ready(function () {
+            debugger
+        var a = '@ViewBag.Message';
+        if (a != '')
+                swal("", a, "Please check your registered mail for activation link.")
+                    .then((value) => {
+                        const stateObj = { escape: 'adduser' };
+                        history.pushState(stateObj, '', '/CRM/Index');
+                        location.href='@Url.Action("Index" ,"CRM")';
+                    })
+
+
+            adduserform.username.value = "";
+            adduserform.email.value = "";
+            adduserform.roleid.value=""
+        });
+    </script>
+}
+<!--#CC04 End-->
